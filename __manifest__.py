@@ -9,8 +9,8 @@
         - Rappels automatiques par email (7, 15, 30 jours)
         - Système de feedback client via questionnaire
     """,
-    'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
+    'author': 'https://github.com/ayoubgorry/Custom-CRM/',
+    'website': 'wait',
     'depends': [
         'base',
         'crm',

@@ -18,6 +18,34 @@
         </field>
     </record>
 
+    <!-- Action pour le menu -->
+    <record id="action_crm_opportunity_view" model="ir.actions.act_window">
+        <field name="name">Opportunités CRM</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form,kanban,calendar,pivot,graph</field>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{'default_type': 'opportunity'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre première opportunité
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu principal -->
+    <menuitem 
+        id="menu_custom_crm_root" 
+        name="CRM Bardin lKetaf" 
+        sequence="10"/>
+
+    <!-- Sous-menu pour les opportunités -->
+    <menuitem 
+        id="menu_custom_crm_opportunities" 
+        name="Opportunités" 
+        parent="menu_custom_crm_root" 
+        action="action_crm_opportunity_view" 
+        sequence="10"/>
+
     <!-- Vue paramètres -->
     <record id="res_config_settings_view_form_crm_feedback" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.crm.feedback</field>
