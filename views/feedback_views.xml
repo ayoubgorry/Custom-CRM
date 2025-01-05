@@ -18,11 +18,11 @@
         </field>
     </record>
 
-    <!-- Action pour le menu -->
+    <!-- Actions -->
     <record id="action_crm_opportunity_view" model="ir.actions.act_window">
-        <field name="name">Opportunités CRM</field>
+        <field name="name">Opportunités</field>
         <field name="res_model">crm.lead</field>
-        <field name="view_mode">tree,form,kanban,calendar,pivot,graph</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>
         <field name="domain">[('type', '=', 'opportunity')]</field>
         <field name="context">{'default_type': 'opportunity'}</field>
         <field name="help" type="html">
@@ -32,18 +32,107 @@
         </field>
     </record>
 
-    <!-- Menu principal -->
+    <record id="action_archived_opportunities" model="ir.actions.act_window">
+        <field name="name">Opportunités Archivées</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="domain">[('type', '=', 'opportunity'), ('active', '=', False)]</field>
+        <field name="context">{'active_test': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune opportunité archivée pour le moment
+            </p>
+        </field>
+    </record>
+
+    <record id="action_feedback_survey_view" model="ir.actions.act_window">
+        <field name="name">Questionnaires Feedback</field>
+        <field name="res_model">survey.survey</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('is_feedback_survey', '=', True)]</field>
+        <field name="context">{'default_is_feedback_survey': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer un nouveau questionnaire de feedback
+            </p>
+        </field>
+    </record>
+
+    <record id="action_feedback_responses_view" model="ir.actions.act_window">
+        <field name="name">Réponses Feedback</field>
+        <field name="res_model">survey.user_input</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('survey_id.is_feedback_survey', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucune réponse de feedback pour le moment
+            </p>
+        </field>
+    </record>
+
+    <!-- Structure du Menu -->
+    <!-- Menu Root -->
     <menuitem 
         id="menu_custom_crm_root" 
         name="CRM Bardin lKetaf" 
-        sequence="10"/>
+        web_icon="custom_crm,static/description/icon.png"
+        sequence="6"/>
 
-    <!-- Sous-menu pour les opportunités -->
+    <!-- Sous-menus Niveau 1 -->
     <menuitem 
         id="menu_custom_crm_opportunities" 
         name="Opportunités" 
         parent="menu_custom_crm_root" 
+        sequence="10"/>
+
+    <menuitem 
+        id="menu_custom_crm_feedback" 
+        name="Feedback" 
+        parent="menu_custom_crm_root" 
+        sequence="20"/>
+
+    <menuitem 
+        id="menu_custom_crm_configuration" 
+        name="Configuration" 
+        parent="menu_custom_crm_root" 
+        sequence="100"/>
+
+    <!-- Sous-menus Niveau 2 - Opportunités -->
+    <menuitem 
+        id="menu_custom_crm_opportunities_active" 
+        name="Opportunités Actives" 
+        parent="menu_custom_crm_opportunities" 
         action="action_crm_opportunity_view" 
+        sequence="10"/>
+
+    <menuitem 
+        id="menu_custom_crm_opportunities_archived" 
+        name="Opportunités Archivées" 
+        parent="menu_custom_crm_opportunities" 
+        action="action_archived_opportunities" 
+        sequence="20"/>
+
+    <!-- Sous-menus Niveau 2 - Feedback -->
+    <menuitem 
+        id="menu_custom_crm_feedback_surveys" 
+        name="Questionnaires" 
+        parent="menu_custom_crm_feedback" 
+        action="action_feedback_survey_view" 
+        sequence="10"/>
+
+    <menuitem 
+        id="menu_custom_crm_feedback_responses" 
+        name="Réponses Clients" 
+        parent="menu_custom_crm_feedback" 
+        action="action_feedback_responses_view" 
+        sequence="20"/>
+
+    <!-- Sous-menus Niveau 2 - Configuration -->
+    <menuitem 
+        id="menu_custom_crm_settings" 
+        name="Paramètres" 
+        parent="menu_custom_crm_configuration" 
+        action="crm.crm_config_settings_action" 
         sequence="10"/>
 
     <!-- Vue paramètres -->
