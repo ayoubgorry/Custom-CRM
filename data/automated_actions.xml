@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Email Server Action -->
+    <record id="action_send_reminder_email" model="ir.actions.server">
+        <field name="name">Send Reminder Email</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    for record in records:
+        template = env.ref('custom_crm.email_template_opportunity_reminder')
+        template.send_mail(record.id, force_send=True)
+        </field>
+    </record>
+
+    <!-- 7 Days Reminder -->
+    <record id="automation_reminder_7_days" model="base.automation">
+        <field name="name">Send Reminder After 7 Days</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="trigger">on_create</field>
+        <field name="filter_pre_domain">[('type', '=', 'opportunity')]</field>
+        <field name="filter_domain">[('create_date', '&lt;=', (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d'))]</field>
+        <field name="state">ir_actions_server</field>
+        <field name="server_action_id" ref="action_send_reminder_email"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- 15 Days Reminder -->
+    <record id="automation_reminder_15_days" model="base.automation">
+        <field name="name">Send Reminder After 15 Days</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="trigger">on_create</field>
+        <field name="filter_pre_domain">[('type', '=', 'opportunity')]</field>
+        <field name="filter_domain">[('create_date', '&lt;=', (datetime.now() - timedelta(days=15)).strftime('%Y-%m-%d'))]</field>
+        <field name="state">ir_actions_server</field>
+        <field name="server_action_id" ref="action_send_reminder_email"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- 30 Days Reminder -->
+    <record id="automation_reminder_30_days" model="base.automation">
+        <field name="name">Send Reminder After 30 Days</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="trigger">on_create</field>
+        <field name="filter_pre_domain">[('type', '=', 'opportunity')]</field>
+        <field name="filter_domain">[('create_date', '&lt;=', (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d'))]</field>
+        <field name="state">ir_actions_server</field>
+        <field name="server_action_id" ref="action_send_reminder_email"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Auto Archive Action Server -->
+    <record id="action_auto_archive" model="ir.actions.server">
+        <field name="name">Auto Archive Opportunity</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    for record in records:
+        record.write({'active': False})
+        </field>
+    </record>
+
+    <!-- Auto Archive Automation -->
+    <record id="automation_auto_archive" model="base.automation">
+        <field name="name">Auto Archive After 30 Days</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="trigger">on_create</field>
+        <field name="filter_pre_domain">[('type', '=', 'opportunity'), ('active', '=', True)]</field>
+        <field name="filter_domain">[('create_date', '&lt;=', (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d'))]</field>
+        <field name="state">ir_actions_server</field>
+        <field name="server_action_id" ref="action_auto_archive"/>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

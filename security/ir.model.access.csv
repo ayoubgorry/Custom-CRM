@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_lead_all,crm.lead.all,model_crm_lead,base.group_user,1,1,1,1
+access_survey_user_input_all,survey.user_input.all,survey.model_survey_user_input,base.group_user,1,1,1,0
