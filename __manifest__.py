@@ -12,18 +12,20 @@
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
     'depends': [
+        'base',
         'crm',
         'mail',
         'survey',
-        'base_automation'  # Ajout de la dépendance base_automation
+        'base_automation'
     ],
     'data': [
         'security/ir.model.access.csv',
+        'views/feedback_views.xml',
+        'views/settings_views.xml',
         'data/automated_actions.xml',
         'data/email_templates.xml',
         'data/survey_data.xml',
-        'views/feedback_views.xml',
-        'views/settings_views.xml',
+        'data/cron_jobs.xml',
     ],
     'installable': True,
     'application': True,

@@ -17,11 +17,15 @@ if records:
     <record id="automation_reminder_7_days" model="base.automation">
         <field name="name">Send Reminder After 7 Days</field>
         <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="trigger">on_create</field>
-        <field name="filter_pre_domain">[('type', '=', 'opportunity')]</field>
-        <field name="filter_domain">[('create_date', '&lt;=', (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d'))]</field>
-        <field name="state">ir_actions_server</field>
-        <field name="server_action_id" ref="action_send_reminder_email"/>
+        <field name="trigger">on_time</field>
+        <field name="filter_domain">[('type', '=', 'opportunity')]</field>
+        <field name="state">code</field>
+        <field name="code">
+template = env.ref('custom_crm.email_template_opportunity_reminder')
+for record in records:
+    if (datetime.now() - record.create_date).days == 7:
+        template.send_mail(record.id, force_send=True)
+        </field>
         <field name="active" eval="True"/>
     </record>
 
@@ -29,47 +33,32 @@ if records:
     <record id="automation_reminder_15_days" model="base.automation">
         <field name="name">Send Reminder After 15 Days</field>
         <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="trigger">on_create</field>
-        <field name="filter_pre_domain">[('type', '=', 'opportunity')]</field>
-        <field name="filter_domain">[('create_date', '&lt;=', (datetime.now() - timedelta(days=15)).strftime('%Y-%m-%d'))]</field>
-        <field name="state">ir_actions_server</field>
-        <field name="server_action_id" ref="action_send_reminder_email"/>
-        <field name="active" eval="True"/>
-    </record>
-
-    <!-- 30 Days Reminder -->
-    <record id="automation_reminder_30_days" model="base.automation">
-        <field name="name">Send Reminder After 30 Days</field>
-        <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="trigger">on_create</field>
-        <field name="filter_pre_domain">[('type', '=', 'opportunity')]</field>
-        <field name="filter_domain">[('create_date', '&lt;=', (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d'))]</field>
-        <field name="state">ir_actions_server</field>
-        <field name="server_action_id" ref="action_send_reminder_email"/>
-        <field name="active" eval="True"/>
-    </record>
-
-    <!-- Auto Archive Action Server -->
-    <record id="action_auto_archive" model="ir.actions.server">
-        <field name="name">Auto Archive Opportunity</field>
-        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="trigger">on_time</field>
+        <field name="filter_domain">[('type', '=', 'opportunity')]</field>
         <field name="state">code</field>
         <field name="code">
-if records:
-    for record in records:
-        record.write({'active': False})
+template = env.ref('custom_crm.email_template_opportunity_reminder')
+for record in records:
+    if (datetime.now() - record.create_date).days == 15:
+        template.send_mail(record.id, force_send=True)
         </field>
+        <field name="active" eval="True"/>
     </record>
 
-    <!-- Auto Archive Automation -->
-    <record id="automation_auto_archive" model="base.automation">
-        <field name="name">Auto Archive After 30 Days</field>
+    <!-- 30 Days Reminder and Archive -->
+    <record id="automation_reminder_and_archive_30_days" model="base.automation">
+        <field name="name">Send Reminder and Archive After 30 Days</field>
         <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="trigger">on_create</field>
-        <field name="filter_pre_domain">[('type', '=', 'opportunity'), ('active', '=', True)]</field>
-        <field name="filter_domain">[('create_date', '&lt;=', (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d'))]</field>
-        <field name="state">ir_actions_server</field>
-        <field name="server_action_id" ref="action_auto_archive"/>
+        <field name="trigger">on_time</field>
+        <field name="filter_domain">[('type', '=', 'opportunity'), ('active', '=', True)]</field>
+        <field name="state">code</field>
+        <field name="code">
+template = env.ref('custom_crm.email_template_opportunity_reminder')
+for record in records:
+    if (datetime.now() - record.create_date).days == 30:
+        template.send_mail(record.id, force_send=True)
+        record.write({'active': False})
+        </field>
         <field name="active" eval="True"/>
     </record>
 </odoo>
