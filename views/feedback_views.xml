@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue formulaire opportunité -->
+    <record id="crm_lead_view_form_inherit_feedback" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.inherit.feedback</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Feedback Client" attrs="{'invisible': [('type', '!=', 'opportunity')]}">
+                    <group>
+                        <field name="feedback_survey_id"/>
+                        <field name="feedback_submitted"/>
+                        <field name="feedback_score" widget="percentpie"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action pour le menu -->
+    <record id="action_crm_opportunity_view" model="ir.actions.act_window">
+        <field name="name">Opportunités CRM</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form,kanban,calendar,pivot,graph</field>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{'default_type': 'opportunity'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre première opportunité
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu principal -->
+    <menuitem 
+        id="menu_custom_crm_root" 
+        name="CRM Bardin lKetaf" 
+        sequence="10"/>
+
+    <!-- Sous-menu pour les opportunités -->
+    <menuitem 
+        id="menu_custom_crm_opportunities" 
+        name="Opportunités" 
+        parent="menu_custom_crm_root" 
+        action="action_crm_opportunity_view" 
+        sequence="10"/>
+
+    <!-- Vue paramètres -->
+    <record id="res_config_settings_view_form_crm_feedback" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.crm.feedback</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="CRM" id="crm_feedback_settings">
+                    <h2>Rappels Automatiques</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="enable_auto_reminders"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="enable_auto_reminders"/>
+                                <div class="text-muted">
+                                    Activer les rappels automatiques pour les opportunités
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
