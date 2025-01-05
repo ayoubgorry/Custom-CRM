@@ -2,7 +2,7 @@
 <odoo>
     <record id="default_feedback_survey" model="survey.survey">
         <field name="title">Questionnaire de satisfaction client</field>
-        <field name="access_token">feedback_satisfaction_client</field>
+        <field name="access_token">feedback_satisfaction_client_2025</field>
         <field name="access_mode">public</field>
         <field name="users_can_go_back" eval="True"/>
         <field name="questions_layout">page_per_section</field>
