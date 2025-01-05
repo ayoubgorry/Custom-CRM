@@ -1,4 +1,4 @@
-gut<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Vue formulaire opportunité -->
     <record id="crm_lead_view_form_inherit_feedback" model="ir.ui.view">
